@@ -59,19 +59,9 @@ namespace MJU23v_D10_inl_sveng
 
                 else if (command == "new")
                 {
-                    if (argument.Length == 3)
-                    {
-                        dictionary.Add(new SweEngGloss(argument[1], argument[2]));
-                    }
-                    else if(argument.Length == 1)
-                    {
-                        Console.WriteLine("Write word in Swedish: ");
-                        string swedish = Console.ReadLine();
-                        Console.Write("Write word in English: ");
-                        string english = Console.ReadLine();
-                        dictionary.Add(new SweEngGloss(swedish, english));
-                    }
+                    AddNewWord(argument);
                 }
+
                 else if (command == "delete")
                 {
                     if (argument.Length == 3)
@@ -153,6 +143,21 @@ namespace MJU23v_D10_inl_sveng
             foreach (SweEngGloss gloss in dictionary)
             {
                 Console.WriteLine($"{gloss.word_swe,-10}  - {gloss.word_eng,-10}");
+            }
+        }
+        static void AddNewWord(string[] argument)
+        {
+            if (argument.Length == 3)
+            {
+                dictionary.Add(new SweEngGloss(argument[1], argument[2]));
+            }
+            else if (argument.Length == 1)
+            {
+                Console.WriteLine("Write word in Swedish: ");
+                string swedish = Console.ReadLine();
+                Console.Write("Write word in English: ");
+                string english = Console.ReadLine();
+                dictionary.Add(new SweEngGloss(swedish, english));
             }
         }
     }
