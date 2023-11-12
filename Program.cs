@@ -54,11 +54,9 @@ namespace MJU23v_D10_inl_sveng
 
                 else if (command == "list")
                 {
-                    foreach(SweEngGloss gloss in dictionary)
-                    {
-                        Console.WriteLine($"{gloss.word_swe,-10}  - {gloss.word_eng,-10}");
-                    }
+                    ListDictionary();
                 }
+
                 else if (command == "new")
                 {
                     if (argument.Length == 3)
@@ -140,7 +138,7 @@ namespace MJU23v_D10_inl_sveng
 
             using (StreamReader sr = new StreamReader(file))
             {
-                dictionary = new List<SweEngGloss>(); // Empty it!
+                dictionary = new List<SweEngGloss>();
                 string line = sr.ReadLine();
                 while (line != null)
                 {
@@ -148,6 +146,13 @@ namespace MJU23v_D10_inl_sveng
                     dictionary.Add(gloss);
                     line = sr.ReadLine();
                 }
+            }
+        }
+        static void ListDictionary()
+        {
+            foreach (SweEngGloss gloss in dictionary)
+            {
+                Console.WriteLine($"{gloss.word_swe,-10}  - {gloss.word_eng,-10}");
             }
         }
     }
