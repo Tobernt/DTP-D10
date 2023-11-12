@@ -1,65 +1,57 @@
-﻿namespace MJU23v_D10_inl_sveng
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace MJU23v_D10_inl_sveng
 {
     internal class Program
     {
         static List<SweEngGloss> dictionary;
+
         class SweEngGloss
         {
             public string word_swe, word_eng;
+
             public SweEngGloss(string word_swe, string word_eng)
             {
-                this.word_swe = word_swe; this.word_eng = word_eng;
+                this.word_swe = word_swe;
+                this.word_eng = word_eng;
             }
+
             public SweEngGloss(string line)
             {
                 string[] words = line.Split('|');
-                this.word_swe = words[0]; this.word_eng = words[1];
+                this.word_swe = words[0];
+                this.word_eng = words[1];
             }
         }
+
+
         static void Main(string[] args)
         {
             string defaultFile = "..\\..\\..\\dict\\sweeng.lis";
             Console.WriteLine("Welcome to the dictionary app!");
+
+            bool exit = false;
+
             do
             {
                 Console.Write("> ");
                 string[] argument = Console.ReadLine().Split();
                 string command = argument[0];
+
+
                 if (command == "quit")
                 {
                     Console.WriteLine("Goodbye!");
+                    exit = true;
                 }
+
                 else if (command == "load")
                 {
-                    if(argument.Length == 2)
-                    {
-                        using (StreamReader sr = new StreamReader(argument[1]))
-                        {
-                            dictionary = new List<SweEngGloss>(); // Empty it!
-                            string line = sr.ReadLine();
-                            while (line != null)
-                            {
-                                SweEngGloss gloss = new SweEngGloss(line);
-                                dictionary.Add(gloss);
-                                line = sr.ReadLine();
-                            }
-                        }
-                    }
-                    else if(argument.Length == 1)
-                    {
-                        using (StreamReader sr = new StreamReader(defaultFile))
-                        {
-                            dictionary = new List<SweEngGloss>(); // Empty it!
-                            string line = sr.ReadLine();
-                            while (line != null)
-                            {
-                                SweEngGloss gloss = new SweEngGloss(line);
-                                dictionary.Add(gloss);
-                                line = sr.ReadLine();
-                            }
-                        }
-                    }
+                    LoadDictionary(argument, defaultFile);
                 }
+
                 else if (command == "list")
                 {
                     foreach(SweEngGloss gloss in dictionary)
@@ -140,7 +132,23 @@
                     Console.WriteLine($"Unknown command: '{command}'");
                 }
             }
-            while (true);
+            while (!exit);
+        }
+        static void LoadDictionary(string[] argument, string defaultFile)
+        {
+            string file = (argument.Length == 2) ? argument[1] : defaultFile;
+
+            using (StreamReader sr = new StreamReader(file))
+            {
+                dictionary = new List<SweEngGloss>(); // Empty it!
+                string line = sr.ReadLine();
+                while (line != null)
+                {
+                    SweEngGloss gloss = new SweEngGloss(line);
+                    dictionary.Add(gloss);
+                    line = sr.ReadLine();
+                }
+            }
         }
     }
 }
