@@ -87,12 +87,40 @@ namespace MJU23v_D10_inl_sveng
                         dictionary.Add(gloss);
                         line = sr.ReadLine();
                     }
+
+                    Console.WriteLine($"Dictionary loaded from file: {file}");
                 }
             }
             catch (FileNotFoundException)
             {
                 Console.WriteLine($"File not found: {file}");
-                // FIXME: Handle the exception appropriately, e.g., allow the user to try a different file.
+
+                if (file.ToLower() == "..\\..\\..\\dict\\sweeng.lis")
+                {
+                    Console.WriteLine("Loading default file failed. Try loading 'computing.lis' or enter a valid file path.");
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid file path or type 'load computing.lis' to try again with the default file.");
+                }
+
+                string userInput = Console.ReadLine();
+
+                if (userInput.ToLower() == "load computing.lis")
+                {
+                    LoadDictionary(new string[] { "load", "..\\..\\..\\dict\\computing.lis" }, defaultFile);
+                }
+                else if (userInput.ToLower().StartsWith("load "))
+                {
+                    // Extract the file path from the user input and try loading the specified file.
+                    string newFilePath = userInput.Substring(5);
+                    LoadDictionary(new string[] { "load", newFilePath }, defaultFile);
+                }
+                else if (userInput.ToLower() != "quit")
+                {
+                    // FIXME: Handle the exception appropriately for other scenarios.
+                    Console.WriteLine("Invalid input. Type 'quit' to exit or 'load' to try again with a different file.");
+                }
             }
         }
         static void ListDictionary()
