@@ -62,6 +62,11 @@ namespace MJU23v_D10_inl_sveng
                     AddNewWord(argument);
                 }
 
+                if (command == "delete")
+                {
+                    DeleteWord(argument);
+                }
+
                 else TranslateWord(argument, command);
             }
             while (!exit);
@@ -70,16 +75,24 @@ namespace MJU23v_D10_inl_sveng
         {
             string file = (argument.Length == 2) ? argument[1] : defaultFile;
 
-            using (StreamReader sr = new StreamReader(file))
+            try
             {
-                dictionary = new List<SweEngGloss>();
-                string line = sr.ReadLine();
-                while (line != null)
+                using (StreamReader sr = new StreamReader(file))
                 {
-                    SweEngGloss gloss = new SweEngGloss(line);
-                    dictionary.Add(gloss);
-                    line = sr.ReadLine();
+                    dictionary = new List<SweEngGloss>();
+                    string line = sr.ReadLine();
+                    while (line != null)
+                    {
+                        SweEngGloss gloss = new SweEngGloss(line);
+                        dictionary.Add(gloss);
+                        line = sr.ReadLine();
+                    }
                 }
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine($"File not found: {file}");
+                // FIXME: Handle the exception appropriately, e.g., allow the user to try a different file.
             }
         }
         static void ListDictionary()
@@ -108,6 +121,13 @@ namespace MJU23v_D10_inl_sveng
         {
             string swedish, english;
 
+            if (argument.Length != 3 && argument.Length != 1)
+            {
+                Console.WriteLine("Invalid number of arguments for delete command.");
+                // FIXME: Handle the error appropriately, e.g., provide instructions to the user.
+                return;
+            }
+
             if (argument.Length == 3)
             {
                 swedish = argument[1];
@@ -122,6 +142,7 @@ namespace MJU23v_D10_inl_sveng
             }
             else
             {
+                Console.WriteLine("Unexpected error in delete command.");
                 return;
             }
 
