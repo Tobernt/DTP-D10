@@ -125,6 +125,7 @@ namespace MJU23v_D10_inl_sveng
             {
                 Console.WriteLine("Invalid number of arguments for delete command.");
                 // FIXME: Handle the error appropriately, e.g., provide instructions to the user.
+                Console.WriteLine("Usage: delete [Swedish] [English]");
                 return;
             }
 
